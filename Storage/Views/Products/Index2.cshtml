@@ -3,10 +3,9 @@
 
 @{
     ViewData["Title"] = "Index2";
-    // var categoryList = Model
-    // .GroupBy(e => e.Category)
-    // .Select(g => g.First());
-    // SelectList categories = new SelectList(categoryList);
+    var categories = Model
+    .GroupBy(e => e.Category)
+    .Select(g => g.First());
 
 }
 
@@ -20,16 +19,14 @@
                 Select Category
             </button>
             <ul class="dropdown-menu">
-                <li class="dropdown-item">ItemA</li>
-                <li class="dropdown-item">ItemB</li>
-                <li class="dropdown-item">ItemC</li>
-                @*  @foreach (var item in categories)
+               
+                 @foreach (var item in categories)
                 {
                 <li class="dropdown-item" href="#">
-                @Html.DisplayNameFor(item => item.Category);
+                @Html.DisplayFor(categoriesItem => item.Category)
 
                 </li>
-                } *@
+                }
 
             </ul>
         </div>
@@ -57,6 +54,9 @@
                 @Html.DisplayNameFor(model => model.Count)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.InventoryValue)
             </th>
             <th></th>
@@ -74,6 +74,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.InventoryValue)
