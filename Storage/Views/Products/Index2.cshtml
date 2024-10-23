@@ -1,19 +1,48 @@
 ﻿@model IEnumerable<Storage.Models.ViewModels.ProductIndexViewModel>
 
+
 @{
     ViewData["Title"] = "Index2";
+    // var categoryList = Model
+    // .GroupBy(e => e.Category)
+    // .Select(g => g.First());
+    // SelectList categories = new SelectList(categoryList);
+
 }
 
 <h1>Index2</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
-    <form asp-action="Search">  
+    <form asp-action="ListCategories">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Category
+            </button>
+            <ul class="dropdown-menu">
+                <li class="dropdown-item">ItemA</li>
+                <li class="dropdown-item">ItemB</li>
+                <li class="dropdown-item">ItemC</li>
+                @*  @foreach (var item in categories)
+                {
+                <li class="dropdown-item" href="#">
+                @Html.DisplayNameFor(item => item.Category);
+
+                </li>
+                } *@
+
+            </ul>
+        </div>
+
+    </form>
+
+    <form asp-action="Search">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" name="searchField" placeholder="Search on name"  />
+
+            <input type="text" class="form-control" name="searchField" placeholder="Search on name" />
             <button class="btn btn-outline-secondary" type="submit"> Search </button>
         </div>
-    </form> 
+    </form>
 </p>
 <table class="table">
     <thead>
@@ -34,26 +63,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Count)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.InventoryValue)
                 </td>
-            <td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

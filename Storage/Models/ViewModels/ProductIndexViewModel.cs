@@ -1,4 +1,6 @@
-﻿namespace Storage.Models.ViewModels
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace Storage.Models.ViewModels
 {
     public class ProductIndexViewModel
     {
@@ -8,5 +10,6 @@
         public int Count { get; set; }
 
         public int InventoryValue { get; set; }
+        public SelectListItem Categories{ get; set; }
     }
 }

@@ -50,7 +50,9 @@ namespace Storage.Controllers
                     Name = e.Name,
                     Price = e.Price,
                     Count = e.Count,
-                    InventoryValue = e.Price * e.Count
+                    InventoryValue = e.Price * e.Count,
+                    Categories = new SelectListItem()
+                    
                 });
             return View("Index2", await results.ToListAsync());
             }
@@ -60,6 +62,15 @@ namespace Storage.Controllers
             }
         }
 
+        public async Task<SelectList> ListCategories()
+        {
+            var categories = _context.Product
+                .GroupBy(e => e.Category)
+                .Select(g => g.First());
+            SelectList result = new SelectList(categories);       
+
+            return result;
+        }
         public async Task<IActionResult> Category(string category)
         {
             var results = _context.Product.Where(e => e.Category.Contains(category))
@@ -69,7 +80,8 @@ namespace Storage.Controllers
                     Name = e.Name,
                     Price = e.Price,
                     Count = e.Count,
-                    InventoryValue = e.Price * e.Count
+                    InventoryValue = e.Price * e.Count,
+                    Categories = new SelectListItem()
                 });
             return View("Index2", await results.ToListAsync());
         }
