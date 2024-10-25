@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Storage.Data;
 using Storage.Models;
@@ -42,7 +43,7 @@ namespace Storage.Controllers
             var model = new MainPageViewModel
             {
                 ProductViewModel = await productModel.ToListAsync(),
-                CategoryModel = categoryModel
+                Categories = categoryModel
             };
             return View("Index2", model);
         }
@@ -67,7 +68,7 @@ namespace Storage.Controllers
                 var model = new MainPageViewModel
                 {
                     ProductViewModel = await productModel.ToListAsync(),
-                    CategoryModel = categoryModel
+                    Categories = categoryModel
                 };
                 return View("Index2", model);
             }
@@ -76,7 +77,15 @@ namespace Storage.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
+        //public async Task<IActionResult> Categories(MainPageViewModel model)
+        //{
+            
+        //    foreach (var item in model.Categories)
+        //    {
+             
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
       
        
 
@@ -129,7 +138,7 @@ namespace Storage.Controllers
                 _context.Add(product);
                 if (!_context.SearchCategory.Any(category => category.Text ==product.Category))
                 {
-                    _context.Add(new SelectListItem{Text = product.Category, Value = product.Category});
+                    _context.Add(new SelectListItem{Text = product.Category, Value = product.Category.ToString()});
                 }
                 await _context.SaveChangesAsync();
 

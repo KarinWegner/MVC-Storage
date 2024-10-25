@@ -5,18 +5,22 @@
 @{
     ViewData["Title"] = "Index2";
     IEnumerable < ProductIndexViewModel > pModel = Model.ProductViewModel;
+    
 }
 
 <h1>Index2</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
-    <form asp-action="ListCategories">
-        <select>
-            Text
-        </select>
 
-    </form>
+    <div class="form-group">
+   @Html.LabelFor(x => Model.Categories, htmlAttributes: new {@class = "control-label col-md-2"})
+   <div class="col-md-5">
+       @Html.DropDownListFor(x =>Model.SelectedCategory, new SelectList(Model.Categories, "Value", "Text"), htmlAttributes: new {@class= "form-control", id="Category"})
+       @Html.ValidationMessageFor(x => x.SelectedCategory, "", new {@class= "text-danger"})
+   </div>
+    </div>
+
 
     <form asp-action="Search">
         <div class="input-group mb-3">
