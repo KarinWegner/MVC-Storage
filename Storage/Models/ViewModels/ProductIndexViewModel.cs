@@ -10,6 +10,5 @@ namespace Storage.Models.ViewModels
         public int Count { get; set; }
         public string Category { get; set; }
         public int InventoryValue { get; set; }
-        public SelectListItem Categories{ get; set; }
     }
 }

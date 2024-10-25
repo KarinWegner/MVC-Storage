@@ -4,15 +4,7 @@ namespace Storage.Models
 {
     public class Product
     {
-        private int id;
-        private string name;
-        private int price;
-        private DateTime? orderDate;
-        private string category;
-        private string? shelf;
-        private int count;
-        private string? description;
-
+  
         public int Id { get; set; }
 
         [StringLength(30)]

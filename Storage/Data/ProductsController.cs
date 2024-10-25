@@ -27,7 +27,7 @@ namespace Storage.Controllers
         //}
         public async Task<IActionResult> Index()
         {
-            var model = _context.Product.Select(e => new ProductIndexViewModel
+            var productModel = _context.Product.Select(e => new ProductIndexViewModel
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -37,25 +37,32 @@ namespace Storage.Controllers
                 InventoryValue = e.Price * e.Count
                 
             });
+            var categoryModel = _context.SearchCategory
+                      .Select(e => new Category(e.Text));
 
-            return View("Index2", await model.ToListAsync());
+            var model = new MainPageViewModel(productModel, categoryModel);
+            return View("Index2", model);
         }
 
         public async Task<IActionResult> Search(string searchField)
         {
             if (!string.IsNullOrEmpty(searchField)) { 
-            var results = _context.Product.Where(e =>e.Category.Contains(searchField))
+            var productModel = _context.Product.Where(e =>e.Category.Contains(searchField))
                 .Select(e =>new ProductIndexViewModel
                 {
                     Id = e.Id,
                     Name = e.Name,
                     Price = e.Price,
                     Count = e.Count,
-                    InventoryValue = e.Price * e.Count,
-                    Categories = new SelectListItem()
+                    InventoryValue = e.Price * e.Count
                     
                 });
-            return View("Index2", await results.ToListAsync());
+                var categoryModel = _context.SearchCategory
+                        .Where(c => c.Text.Contains(searchField))
+                        .Select(e => new Category(e.Text));
+
+                var model = new MainPageViewModel(productModel, categoryModel);
+            return View("Index2", model);
             }
             else
             {
@@ -81,8 +88,7 @@ namespace Storage.Controllers
                     Name = e.Name,
                     Price = e.Price,
                     Count = e.Count,
-                    InventoryValue = e.Price * e.Count,
-                    Categories = new SelectListItem()
+                    InventoryValue = e.Price * e.Count
                 });
             return View("Index2", await results.ToListAsync());
         }
@@ -134,7 +140,12 @@ namespace Storage.Controllers
 
                 };
                 _context.Add(product);
+                if (!_context.SearchCategory.Any(category => category.Text ==product.Category))
+                {
+                    _context.Add(new Category(product.Category));
+                }
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
