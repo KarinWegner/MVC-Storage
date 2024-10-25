@@ -1,9 +1,10 @@
-﻿@model MainPageViewModel
+﻿
+@model MainPageViewModel
 
 
 @{
     ViewData["Title"] = "Index2";
-
+    IEnumerable < ProductIndexViewModel > pModel = Model.ProductViewModel;
 }
 
 <h1>Index2</h1>
@@ -11,22 +12,9 @@
 <p>
     <a asp-action="Create">Create New</a>
     <form asp-action="ListCategories">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Select Category
-            </button>
-            <ul class="dropdown-menu">
-               
-                 @foreach (var item in categories)
-                {
-                <li class="dropdown-item" href="#">
-                @Html.DisplayFor(categoriesItem => item.Category)
-
-                </li>
-                }
-
-            </ul>
-        </div>
+        <select>
+            Text
+        </select>
 
     </form>
 
@@ -42,25 +30,26 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Name)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Count)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Count)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InventoryValue)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().InventoryValue)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.ProductViewModel)
         {
             <tr>
                 <td>

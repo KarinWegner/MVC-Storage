@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "ProductsController";
+    var PModel = Model.ProductViewModel;
 }
 
 <h1>ProductsController</h1>
@@ -13,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Count)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().Count)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InventoryValue)
+                @Html.DisplayNameFor(model => model.ProductViewModel.FirstOrDefault().InventoryValue)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.ProductViewModel) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

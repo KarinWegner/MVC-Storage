@@ -37,10 +37,13 @@ namespace Storage.Controllers
                 InventoryValue = e.Price * e.Count
                 
             });
-            var categoryModel = _context.SearchCategory
-                      .Select(e => new Category(e.Text));
+            var categoryModel = _context.SearchCategory;
 
-            var model = new MainPageViewModel(productModel, categoryModel);
+            var model = new MainPageViewModel
+            {
+                ProductViewModel = await productModel.ToListAsync(),
+                CategoryModel = categoryModel
+            };
             return View("Index2", model);
         }
 
@@ -57,12 +60,16 @@ namespace Storage.Controllers
                     InventoryValue = e.Price * e.Count
                     
                 });
-                var categoryModel = _context.SearchCategory
-                        .Where(c => c.Text.Contains(searchField))
-                        .Select(e => new Category(e.Text));
 
-                var model = new MainPageViewModel(productModel, categoryModel);
-            return View("Index2", model);
+                var categoryModel =  _context.SearchCategory
+                    .Where(e => e.Text.Contains(searchField)).ToList();
+
+                var model = new MainPageViewModel
+                {
+                    ProductViewModel = await productModel.ToListAsync(),
+                    CategoryModel = categoryModel
+                };
+                return View("Index2", model);
             }
             else
             {
@@ -70,28 +77,8 @@ namespace Storage.Controllers
             }
         }
 
-        public async Task<SelectList> ListCategories()
-        {
-            var categories = _context.Product
-                .GroupBy(e => e.Category)
-                .Select(g => g.First());
-            SelectList result = new SelectList(categories);       
-
-            return result;
-        }
-        public async Task<IActionResult> Category(string category)
-        {
-            var results = _context.Product.Where(e => e.Category.Contains(category))
-                .Select(e => new ProductIndexViewModel
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Price = e.Price,
-                    Count = e.Count,
-                    InventoryValue = e.Price * e.Count
-                });
-            return View("Index2", await results.ToListAsync());
-        }
+      
+       
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -142,7 +129,7 @@ namespace Storage.Controllers
                 _context.Add(product);
                 if (!_context.SearchCategory.Any(category => category.Text ==product.Category))
                 {
-                    _context.Add(new Category(product.Category));
+                    _context.Add(new SelectListItem{Text = product.Category, Value = product.Category});
                 }
                 await _context.SaveChangesAsync();
 
